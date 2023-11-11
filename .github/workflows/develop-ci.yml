@@ -1,0 +1,32 @@
+name: develop CI
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+      
+    - name: Nodejs 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.18.0
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+    
+    - name: build
+      run: npm run start
+
+    - name: test
+      run: npm run test
+    
+    
