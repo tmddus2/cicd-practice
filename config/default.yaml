@@ -1,0 +1,10 @@
+server:
+  port: process.env.SERVER_PORT
+
+db:
+  type: process.env.DB_TYPE
+  port: process.env.DB_PORT
+  database: process.env.DB_NAME
+
+jwt:
+  expiresIn: process.env.JWT_EXPIRESIN
