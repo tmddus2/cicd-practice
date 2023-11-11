@@ -6,8 +6,16 @@ on:
   pull_request:
     branches:
       - develop
-
+      
 jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    container: node:18
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
   test:
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +30,12 @@ jobs:
         
     - name: Install dependencies
       run: npm install
+
+    - name: Connect to PostgreSQL
+      run: node client.js
+      env:
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
 
     - name: Generate Environment Variables File for Production
       run: |
