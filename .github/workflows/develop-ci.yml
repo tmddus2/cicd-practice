@@ -1,0 +1,54 @@
+name: develop CI
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+      
+    - name: Nodejs 18
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.18.0
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+
+    - name: Generate Environment Variables File for Production
+      run: |
+        echo "SERVER_PORT" >> .env
+        echo "DB_TYPE" >> .env
+        echo "DB_PORT" >> .env
+        echo "DB_NAME" >> .env
+        echo "JWT_EXPIRESIN" >> .env
+        echo "DEV_DB_HOST" >> .env
+        echo "DEV_DB_USERNAME" >> .env
+        echo "DEV_DB_PASSWORD" >> .env
+        echo "JWT_SECRET" >> .env
+      env:
+        SERVER_PORT: ${{ secrets.SERVER_PORT }}
+        DB_TYPE: ${{ secrets.DB_TYPE }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        DB_NAME: ${{ secrets.DB_NAME }}
+        JWT_EXPIRESIN: ${{ secrets.JWT_EXPIRESIN }}
+        DEV_DB_HOST: ${{ secrets.DEV_DB_HOST }}
+        DEV_DB_USERNAME: ${{ secrets.DEV_DB_USERNAME }}
+        DEV_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+    
+    - name: build
+      run: npm run start
+
+    - name: test
+      run: npm run test
+    
+    
