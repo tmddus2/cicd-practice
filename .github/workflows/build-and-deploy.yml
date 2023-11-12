@@ -1,0 +1,26 @@
+name: build on deploy
+
+on:
+  push:
+    branches: [cicd-test]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Nodejs 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.18.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: build
+        run: npm run start
+
+      - name: test
+        run: npm run test
