@@ -1,0 +1,41 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [cicd-test]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Nodejs 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.18.0
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: build
+        run: npm run build
+
+      - name: test
+        run: npm run test
+
+      - name: Login Dockerhub
+        env: 
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+          DOCKER_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD    
+
+      - name: Build Docker image
+        run: docker build -t image-test
+
+      - name: taging
+        run: docker tag image-test:latest boarlog/image-test:latest
+
+      - name: Push to Dockerhub
+        run: docker push boarlog/image-test:latest
