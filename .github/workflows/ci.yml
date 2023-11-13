@@ -32,7 +32,7 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build Docker image
-        run: docker build -t image-test
+        run: docker build -t image-test .
 
       - name: taging
         run: docker tag image-test:latest boarlog/image-test:latest
