@@ -35,7 +35,9 @@ jobs:
         run: docker build -t image-test .
 
       - name: taging
-        run: docker tag image-test:latest boarlog/image-test:latest
+        env: 
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+        run: docker tag image-test:latest $DOCKER_USERNAME/image-test:latest
 
       - name: Push to Dockerhub
         run: docker push boarlog/image-test:latest
