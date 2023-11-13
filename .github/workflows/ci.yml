@@ -40,4 +40,4 @@ jobs:
         run: docker tag image-test:latest $DOCKER_USERNAME/image-test:latest
 
       - name: Push to Dockerhub
-        run: docker push boarlog/image-test:latest
+        run: docker push $DOCKER_USERNAME/image-test:latest
