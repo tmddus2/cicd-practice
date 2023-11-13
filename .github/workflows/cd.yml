@@ -1,0 +1,25 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Pull Docker image
+      env: 
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+      run: sudo docker pull $DOCKER_USERNAME/image-test:latest
+      
+    - name: Delete old Docker container
+      run: sudo docker rm -f image-test-container || true
+
+    - name: Run Docker container
+      env: 
+          DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+      run: sudo docker run -d -p 8080:8080 --name image-test-container $DOCKER_USERNAME/image-test
