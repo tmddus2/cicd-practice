@@ -23,4 +23,4 @@ jobs:
     - name: Run Docker container
       env: 
           DOCKER_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
-      run: sudo docker run -d -p 8080:8080 --name image-test-container $DOCKER_USERNAME/image-test
+      run: sudo docker run -d -p 8080:3000 --name image-test-container $DOCKER_USERNAME/image-test
